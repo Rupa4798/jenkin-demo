@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: apigateway-ms
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+          corsConfigurations:
+            '[/**]':
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
+      routes:
+      
+        - id: eventservice
+          uri: http://localhost:7070
+          predicates:
+            - Path=/events/**
+            
+        - id: admins
+          uri: http://localhost:7002
+          predicates:
+            - Path=/admins/**
+            
+        - id: foodservice
+          uri: http://localhost:7000
+          predicates:
+            - Path=/foods/**
+            
+        - id: userservice
+          uri: http://localhost:7001
+          predicates:
+            - Path=/users/**
+            
+        - id: payment
+          uri: http://localhost:8080
+          predicates:
+            - Path=/payments/**
+            
+        - id: registrations
+          uri: http://localhost:7003
+          predicates:
+            - Path=/registrations/**
+          
+            
+       
+        
+
+
+server:
+  port: 9090
